@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📉 India Unemployment Analysis — CodeAlpha Task 2</title>
+  <meta name="description" content="Comprehensive data-driven analysis of India's unemployment trends from 2019–2020, including COVID-19 impact, state-wise comparisons, and interactive visualizations." />
+  <meta name="keywords" content="India unemployment, COVID-19, data science, CodeAlpha, Python, data visualization" />
+  <meta name="author" content="Vilash Kumar Reddy" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <span class="logo-icon">📉</span>
+        <span class="logo-text">UnemploymentAI</span>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#overview" class="nav-link">Overview</a></li>
+        <li><a href="#stats" class="nav-link">Key Stats</a></li>
+        <li><a href="#trends" class="nav-link">Trends</a></li>
+        <li><a href="#covid" class="nav-link">COVID Impact</a></li>
+        <li><a href="#states" class="nav-link">States</a></li>
+        <li><a href="#zones" class="nav-link">Zones</a></li>
+        <li><a href="#gallery" class="nav-link">Gallery</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="hero-bg">
+      <img src="hero_banner.png" alt="Data visualization hero" class="hero-img" />
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge animate-fade-up">
+        <span class="badge-dot"></span>
+        CodeAlpha Data Science Internship · Task 2 · May Batch 2026
+      </div>
+      <h1 class="hero-title animate-fade-up delay-1">
+        India Unemployment<br />
+        <span class="gradient-text">Analysis & Insights</span>
+      </h1>
+      <p class="hero-subtitle animate-fade-up delay-2">
+        A comprehensive data-driven exploration of unemployment trends across<br />
+        28 Indian states — before, during, and after the COVID-19 lockdown.
+      </p>
+      <div class="hero-cta animate-fade-up delay-3">
+        <a href="#stats" class="btn-primary" id="hero-explore-btn">Explore Analysis</a>
+        <a href="#gallery" class="btn-secondary" id="hero-gallery-btn">View Visualizations</a>
+      </div>
+      <div class="hero-stats animate-fade-up delay-4">
+        <div class="hero-stat">
+          <span class="hstat-val" id="counter-avg">0</span>
+          <span class="hstat-unit">%</span>
+          <span class="hstat-label">National Avg Rate</span>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat">
+          <span class="hstat-val" id="counter-max">0</span>
+          <span class="hstat-unit">%</span>
+          <span class="hstat-label">Peak (COVID Spike)</span>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat">
+          <span class="hstat-val" id="counter-states">0</span>
+          <span class="hstat-unit"></span>
+          <span class="hstat-label">States Analyzed</span>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat">
+          <span class="hstat-val" id="counter-records">0</span>
+          <span class="hstat-unit">K</span>
+          <span class="hstat-label">Data Records</span>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll to explore</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ── OVERVIEW / DATASETS ── -->
+  <section id="overview" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">📁 Data Sources</span>
+        <h2 class="section-title">Dataset Overview</h2>
+        <p class="section-desc">Two complementary datasets covering India's unemployment landscape from May 2019 to November 2020.</p>
+      </div>
+      <div class="dataset-grid">
+        <div class="dataset-card card-glow" id="dataset1-card">
+          <div class="ds-header">
+            <div class="ds-icon">🗃️</div>
+            <div class="ds-meta">
+              <h3>Unemployment in India</h3>
+              <code>Unemployment_in_India.csv</code>
+            </div>
+          </div>
+          <div class="ds-stats">
+            <div class="ds-stat"><span class="ds-val accent-pink">768</span><span class="ds-key">Rows</span></div>
+            <div class="ds-stat"><span class="ds-val accent-cyan">7</span><span class="ds-key">Columns</span></div>
+            <div class="ds-stat"><span class="ds-val accent-purple">28</span><span class="ds-key">States</span></div>
+            <div class="ds-stat"><span class="ds-val accent-gold">14</span><span class="ds-key">Months</span></div>
+          </div>
+          <div class="ds-range">
+            <span class="range-tag">📅 May 2019 → June 2020</span>
+          </div>
+          <div class="ds-columns">
+            <span class="tag">Region</span>
+            <span class="tag">Date</span>
+            <span class="tag">Frequency</span>
+            <span class="tag">Unemployment Rate %</span>
+            <span class="tag">Employed</span>
+            <span class="tag">Labour Participation %</span>
+            <span class="tag">Area</span>
+          </div>
+          <div class="ds-area-badges">
+            <span class="area-badge rural">🌾 Rural</span>
+            <span class="area-badge urban">🏙️ Urban</span>
+          </div>
+        </div>
+
+        <div class="dataset-card card-glow" id="dataset2-card">
+          <div class="ds-header">
+            <div class="ds-icon">📊</div>
+            <div class="ds-meta">
+              <h3>Unemployment Rate upto Nov 2020</h3>
+              <code>Unemployment_Rate_upto_11_2020.csv</code>
+            </div>
+          </div>
+          <div class="ds-stats">
+            <div class="ds-stat"><span class="ds-val accent-pink">267</span><span class="ds-key">Rows</span></div>
+            <div class="ds-stat"><span class="ds-val accent-cyan">9</span><span class="ds-key">Columns</span></div>
+            <div class="ds-stat"><span class="ds-val accent-purple">5</span><span class="ds-key">Zones</span></div>
+            <div class="ds-stat"><span class="ds-val accent-green">0</span><span class="ds-key">Nulls</span></div>
+          </div>
+          <div class="ds-range">
+            <span class="range-tag">📅 Jan 2020 → Nov 2020</span>
+          </div>
+          <div class="ds-columns">
+            <span class="tag">Region</span>
+            <span class="tag">Date</span>
+            <span class="tag">Unemployment Rate %</span>
+            <span class="tag">Employed</span>
+            <span class="tag">Labour Participation %</span>
+            <span class="tag tag-special">Region.1 (Zone)</span>
+            <span class="tag tag-special">Longitude</span>
+            <span class="tag tag-special">Latitude</span>
+          </div>
+          <div class="ds-area-badges">
+            <span class="zone-badge north">🔵 North</span>
+            <span class="zone-badge south">🟢 South</span>
+            <span class="zone-badge east">🟡 East</span>
+            <span class="zone-badge west">🟠 West</span>
+            <span class="zone-badge ne">🔴 Northeast</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── KEY STATS ── -->
+  <section id="stats" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">📊 Key Metrics</span>
+        <h2 class="section-title">Key Findings at a Glance</h2>
+        <p class="section-desc">Critical numbers extracted from deep data analysis of both datasets.</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card" id="stat-national">
+          <div class="stat-icon">🇮🇳</div>
+          <div class="stat-content">
+            <div class="stat-number accent-purple">11.79<span class="stat-unit">%</span></div>
+            <div class="stat-label">National Average Unemployment</div>
+            <div class="stat-sub">Across all states & areas (2019–2020)</div>
+          </div>
+        </div>
+        <div class="stat-card" id="stat-max">
+          <div class="stat-icon">🔴</div>
+          <div class="stat-content">
+            <div class="stat-number accent-pink">76.74<span class="stat-unit">%</span></div>
+            <div class="stat-label">Peak Unemployment Rate</div>
+            <div class="stat-sub">Puducherry — April 2020 (Urban)</div>
+          </div>
+        </div>
+        <div class="stat-card" id="stat-covid-jump">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-content">
+            <div class="stat-number accent-gold">+3.73<span class="stat-unit">%</span></div>
+            <div class="stat-label">COVID-19 Unemployment Jump</div>
+            <div class="stat-sub">Pre: 9.23% → Post: 12.96%</div>
+          </div>
+        </div>
+        <div class="stat-card" id="stat-highest">
+          <div class="stat-icon">📍</div>
+          <div class="stat-content">
+            <div class="stat-number accent-pink">Haryana</div>
+            <div class="stat-label">Highest Avg Unemployment State</div>
+            <div class="stat-sub">~26% average across the period</div>
+          </div>
+        </div>
+        <div class="stat-card" id="stat-lowest">
+          <div class="stat-icon">✅</div>
+          <div class="stat-content">
+            <div class="stat-number accent-green">Meghalaya</div>
+            <div class="stat-label">Lowest Avg Unemployment State</div>
+            <div class="stat-sub">~3.5% average across the period</div>
+          </div>
+        </div>
+        <div class="stat-card" id="stat-peak-month">
+          <div class="stat-icon">📅</div>
+          <div class="stat-content">
+            <div class="stat-number accent-cyan">May 2020</div>
+            <div class="stat-label">Peak Unemployment Month</div>
+            <div class="stat-sub">Post-lockdown COVID peak month</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TRENDS ── -->
+  <section id="trends" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">📈 Time Series</span>
+        <h2 class="section-title">Unemployment Trend (2019–2020)</h2>
+        <p class="section-desc">Monthly trend of India's average unemployment rate — with the COVID-19 lockdown moment marked.</p>
+      </div>
+      <div class="chart-wrapper">
+        <div class="chart-info-bar">
+          <div class="ci-item"><span class="ci-dot" style="background:#FF6B9D"></span>Overall Rate</div>
+          <div class="ci-item"><span class="ci-dot" style="background:#69FF94"></span>Rural</div>
+          <div class="ci-item"><span class="ci-dot" style="background:#00D4FF"></span>Urban</div>
+          <div class="ci-item"><span class="ci-dot" style="background:#FF4444; border-style:dashed"></span>COVID-19 Lockdown</div>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="trendChart"></canvas>
+        </div>
+        <div class="covid-marker-label">⚠️ March 2020 — COVID-19 Lockdown Begins</div>
+      </div>
+
+      <div class="insight-box">
+        <div class="ib-icon">💡</div>
+        <div class="ib-content">
+          <h4>Key Insight</h4>
+          <p>India's unemployment rate was relatively stable around <strong>8–12%</strong> throughout 2019. Starting March 2020 with the national lockdown, rates surged dramatically — peaking in <strong>April–May 2020</strong> with some states crossing 40–75%. Recovery began from June–July 2020 onwards.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RURAL VS URBAN ── -->
+  <section id="rural-urban" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">🌆 Area Comparison</span>
+        <h2 class="section-title">Rural vs Urban Unemployment</h2>
+        <p class="section-desc">How the lockdown impacted rural and urban areas differently across India.</p>
+      </div>
+      <div class="split-layout">
+        <div class="chart-wrapper half-chart">
+          <canvas id="ruralUrbanChart"></canvas>
+        </div>
+        <div class="comparison-cards">
+          <div class="comp-card rural-card">
+            <div class="comp-header">
+              <span class="comp-icon">🌾</span>
+              <h3>Rural India</h3>
+            </div>
+            <div class="comp-avg">Avg: <strong class="accent-green">~10.2%</strong></div>
+            <ul class="comp-points">
+              <li>Lower base unemployment pre-COVID</li>
+              <li>Agricultural sector provided some buffer</li>
+              <li>Reverse migration increased rural labour</li>
+              <li>Faster recovery post-lockdown</li>
+            </ul>
+          </div>
+          <div class="comp-card urban-card">
+            <div class="comp-header">
+              <span class="comp-icon">🏙️</span>
+              <h3>Urban India</h3>
+            </div>
+            <div class="comp-avg">Avg: <strong class="accent-pink">~13.5%</strong></div>
+            <ul class="comp-points">
+              <li>Higher base rate — more formal jobs</li>
+              <li>Severely hit by industry shutdowns</li>
+              <li>Reverse migration worsened supply</li>
+              <li>Slower recovery — service sector lag</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── COVID IMPACT ── -->
+  <section id="covid" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">🦠 COVID-19 Impact</span>
+        <h2 class="section-title">Before vs After COVID-19</h2>
+        <p class="section-desc">Measuring the economic shock — comparing Pre-COVID (Jan–Feb 2020) against Post-COVID (Mar–Nov 2020) unemployment rates.</p>
+      </div>
+
+      <div class="covid-summary-row">
+        <div class="covid-pill pre">
+          <span class="cp-label">Pre-COVID Average</span>
+          <span class="cp-val">9.23%</span>
+          <span class="cp-period">Jan–Feb 2020</span>
+        </div>
+        <div class="covid-arrow">
+          <svg viewBox="0 0 60 20" fill="none"><path d="M0 10 H50 M40 2 L50 10 L40 18" stroke="#FF6B9D" stroke-width="2" stroke-linecap="round"/></svg>
+          <span class="arrow-label accent-pink">+3.73% surge</span>
+        </div>
+        <div class="covid-pill post">
+          <span class="cp-label">Post-COVID Average</span>
+          <span class="cp-val">12.96%</span>
+          <span class="cp-period">Mar–Nov 2020</span>
+        </div>
+      </div>
+
+      <div class="chart-wrapper">
+        <div class="chart-canvas-wrap">
+          <canvas id="covidImpactChart"></canvas>
+        </div>
+      </div>
+
+      <div class="top5-section">
+        <h3 class="sub-title">🔴 Top 5 Most COVID-Affected States</h3>
+        <div class="top5-grid">
+          <div class="top5-card" style="--rank-color: #FF6B9D">
+            <span class="rank">01</span>
+            <span class="state-name">Jharkhand</span>
+            <div class="impact-bar-wrap"><div class="impact-bar" style="width:95%; background:#FF6B9D"></div></div>
+            <span class="impact-val">+47.6% peak</span>
+          </div>
+          <div class="top5-card" style="--rank-color: #FF8C69">
+            <span class="rank">02</span>
+            <span class="state-name">Bihar</span>
+            <div class="impact-bar-wrap"><div class="impact-bar" style="width:85%; background:#FF8C69"></div></div>
+            <span class="impact-val">+45.0% peak</span>
+          </div>
+          <div class="top5-card" style="--rank-color: #FFB347">
+            <span class="rank">03</span>
+            <span class="state-name">Tamil Nadu</span>
+            <div class="impact-bar-wrap"><div class="impact-bar" style="width:78%; background:#FFB347"></div></div>
+            <span class="impact-val">+49.8% peak</span>
+          </div>
+          <div class="top5-card" style="--rank-color: #7B61FF">
+            <span class="rank">04</span>
+            <span class="state-name">Delhi</span>
+            <div class="impact-bar-wrap"><div class="impact-bar" style="width:70%; background:#7B61FF"></div></div>
+            <span class="impact-val">+45.7% peak</span>
+          </div>
+          <div class="top5-card" style="--rank-color: #00D4FF">
+            <span class="rank">05</span>
+            <span class="state-name">Madhya Pradesh</span>
+            <div class="impact-bar-wrap"><div class="impact-bar" style="width:62%; background:#00D4FF"></div></div>
+            <span class="impact-val">+40.4% peak</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATES ── -->
+  <section id="states" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">📍 State-wise Analysis</span>
+        <h2 class="section-title">Top 15 States by Unemployment Rate</h2>
+        <p class="section-desc">Average unemployment rates across Indian states — ranked from highest to lowest.</p>
+      </div>
+      <div class="chart-wrapper">
+        <div class="chart-canvas-wrap" style="height:520px">
+          <canvas id="stateChart"></canvas>
+        </div>
+      </div>
+      <div class="state-insight-row">
+        <div class="si-box high">
+          <span class="si-icon">📈</span>
+          <div>
+            <strong>Highest Unemployment</strong>
+            <p>Haryana, Tripura & Jharkhand consistently ranked highest — influenced by industrial dependency and COVID disruptions.</p>
+          </div>
+        </div>
+        <div class="si-box low">
+          <span class="si-icon">📉</span>
+          <div>
+            <strong>Lowest Unemployment</strong>
+            <p>Meghalaya, Odisha & Andhra Pradesh showed resilience — agricultural economies and government employment schemes helped.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ZONES ── -->
+  <section id="zones" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">🗺️ Regional Zones</span>
+        <h2 class="section-title">Zone-wise Unemployment Distribution</h2>
+        <p class="section-desc">How unemployment varied across India's five geographical zones during 2020.</p>
+      </div>
+      <div class="zone-layout">
+        <div class="chart-wrapper zone-chart">
+          <canvas id="zoneChart"></canvas>
+        </div>
+        <div class="zone-cards">
+          <div class="zone-card" id="zone-north">
+            <div class="zc-top">
+              <span class="zone-dot" style="background:#7B61FF"></span>
+              <h4>North</h4>
+            </div>
+            <div class="zc-rate">~20.8%</div>
+            <div class="zc-states">Haryana, Punjab, Delhi, Rajasthan, HP, J&K, UP, Uttarakhand</div>
+            <div class="zc-bar-wrap"><div class="zc-bar" style="width:84%; background:#7B61FF"></div></div>
+          </div>
+          <div class="zone-card" id="zone-south">
+            <div class="zc-top">
+              <span class="zone-dot" style="background:#69FF94"></span>
+              <h4>South</h4>
+            </div>
+            <div class="zc-rate">~10.2%</div>
+            <div class="zc-states">Andhra Pradesh, Karnataka, Kerala, Tamil Nadu, Telangana, Puducherry</div>
+            <div class="zc-bar-wrap"><div class="zc-bar" style="width:41%; background:#69FF94"></div></div>
+          </div>
+          <div class="zone-card" id="zone-east">
+            <div class="zc-top">
+              <span class="zone-dot" style="background:#FFB347"></span>
+              <h4>East</h4>
+            </div>
+            <div class="zc-rate">~17.5%</div>
+            <div class="zc-states">Bihar, Jharkhand, Odisha, West Bengal</div>
+            <div class="zc-bar-wrap"><div class="zc-bar" style="width:70%; background:#FFB347"></div></div>
+          </div>
+          <div class="zone-card" id="zone-west">
+            <div class="zc-top">
+              <span class="zone-dot" style="background:#00D4FF"></span>
+              <h4>West</h4>
+            </div>
+            <div class="zc-rate">~9.5%</div>
+            <div class="zc-states">Gujarat, Maharashtra, Goa, Chhattisgarh, Madhya Pradesh</div>
+            <div class="zc-bar-wrap"><div class="zc-bar" style="width:38%; background:#00D4FF"></div></div>
+          </div>
+          <div class="zone-card" id="zone-ne">
+            <div class="zc-top">
+              <span class="zone-dot" style="background:#FF8C69"></span>
+              <h4>Northeast</h4>
+            </div>
+            <div class="zc-rate">~12.3%</div>
+            <div class="zc-states">Assam, Meghalaya, Sikkim, Tripura</div>
+            <div class="zc-bar-wrap"><div class="zc-bar" style="width:50%; background:#FF8C69"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GALLERY ── -->
+  <section id="gallery" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">🎨 Visualizations</span>
+        <h2 class="section-title">7 Dark-Themed Visualizations</h2>
+        <p class="section-desc">Generated using Python (matplotlib + seaborn) — premium dark-themed charts for deep analysis.</p>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item featured" id="gal-1">
+          <div class="gal-overlay">
+            <div class="gal-info">
+              <span class="gal-num">01</span>
+              <h3>Monthly Unemployment Trend</h3>
+              <p>Line chart showing India's unemployment rate over time with COVID-19 lockdown marker at March 2020.</p>
+              <code>line_trend.png</code>
+            </div>
+          </div>
+          <div class="gal-placeholder">
+            <canvas id="mini-trend" width="800" height="350"></canvas>
+          </div>
+        </div>
+        <div class="gallery-item" id="gal-2">
+          <div class="gal-overlay">
+            <div class="gal-info">
+              <span class="gal-num">02</span>
+              <h3>Rural vs Urban</h3>
+              <p>Dual-line comparison of area-wise unemployment rates over time.</p>
+              <code>rural_vs_urban.png</code>
+            </div>
+          </div>
+          <div class="gal-placeholder small">
+            <canvas id="mini-area" width="400" height="200"></canvas>
+          </div>
+        </div>
+        <div class="gallery-item" id="gal-3">
+          <div class="gal-overlay">
+            <div class="gal-info">
+              <span class="gal-num">03</span>
+              <h3>State-wise Bar Chart</h3>
+              <p>Top 15 states ranked by average unemployment — horizontal gradient bars.</p>
+              <code>statewise_bar.png</code>
+            </div>
+          </div>
+          <div class="gal-placeholder small">
+            <canvas id="mini-state" width="400" height="200"></canvas>
+          </div>
+        </div>
+        <div class="gallery-item" id="gal-4">
+          <div class="gal-overlay">
+            <div class="gal-info">
+              <span class="gal-num">04</span>
+              <h3>COVID-19 Impact Bars</h3>
+              <p>Side-by-side Pre vs Post COVID unemployment per state using Dataset 2.</p>
+              <code>covid_impact.png</code>
+            </div>
+          </div>
+          <div class="gal-placeholder small">
+            <canvas id="mini-covid" width="400" height="200"></canvas>
+          </div>
+        </div>
+        <div class="gallery-item" id="gal-5">
+          <div class="gal-overlay">
+            <div class="gal-info">
+              <span class="gal-num">05</span>
+              <h3>State × Month Heatmap</h3>
+              <p>Grid heatmap of unemployment rates across states and months.</p>
+              <code>monthly_heatmap.png</code>
+            </div>
+          </div>
+          <div class="gal-placeholder small">
+            <canvas id="mini-heat" width="400" height="200"></canvas>
+          </div>
+        </div>
+        <div class="gallery-item" id="gal-6">
+          <div class="gal-overlay">
+            <div class="gal-info">
+              <span class="gal-num">06</span>
+              <h3>Zone-wise Boxplot</h3>
+              <p>Distribution spread of unemployment across 5 geographical zones of India.</p>
+              <code>zonewise_box.png</code>
+            </div>
+          </div>
+          <div class="gal-placeholder small">
+            <canvas id="mini-zone" width="400" height="200"></canvas>
+          </div>
+        </div>
+        <div class="gallery-item" id="gal-7">
+          <div class="gal-overlay">
+            <div class="gal-info">
+              <span class="gal-num">07</span>
+              <h3>Labour vs Unemployment Scatter</h3>
+              <p>Scatter plot showing correlation between labour participation and unemployment — with polyfit trend line.</p>
+              <code>labour_vs_unemployment.png</code>
+            </div>
+          </div>
+          <div class="gal-placeholder small">
+            <canvas id="mini-scatter" width="400" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INSIGHTS SUMMARY ── -->
+  <section id="insights" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">🔍 Summary</span>
+        <h2 class="section-title">Key Insights Summary</h2>
+        <p class="section-desc">Critical findings from the complete analysis — as printed by the Python script.</p>
+      </div>
+      <div class="terminal-box">
+        <div class="terminal-header">
+          <span class="t-dot red"></span>
+          <span class="t-dot yellow"></span>
+          <span class="t-dot green"></span>
+          <span class="t-title">unemployment_analysis.py — Output</span>
+        </div>
+        <div class="terminal-body">
+          <pre id="terminal-output"></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT / TECH STACK ── -->
+  <section id="about" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">⚙️ Tech Stack</span>
+        <h2 class="section-title">Tools & Technologies</h2>
+        <p class="section-desc">Built entirely with Python using industry-standard data science libraries.</p>
+      </div>
+      <div class="tech-grid">
+        <div class="tech-card" id="tc-python">
+          <div class="tech-logo">🐍</div>
+          <h3>Python 3.x</h3>
+          <p>Core programming language for data processing and analysis</p>
+        </div>
+        <div class="tech-card" id="tc-pandas">
+          <div class="tech-logo">🐼</div>
+          <h3>Pandas</h3>
+          <p>Data loading, cleaning, manipulation, and transformation</p>
+        </div>
+        <div class="tech-card" id="tc-numpy">
+          <div class="tech-logo">🔢</div>
+          <h3>NumPy</h3>
+          <p>Numerical computing — polyfit trend lines and statistical ops</p>
+        </div>
+        <div class="tech-card" id="tc-matplotlib">
+          <div class="tech-logo">📊</div>
+          <h3>Matplotlib</h3>
+          <p>Core charting engine — 7 custom dark-themed visualizations</p>
+        </div>
+        <div class="tech-card" id="tc-seaborn">
+          <div class="tech-logo">🎨</div>
+          <h3>Seaborn</h3>
+          <p>Statistical plots — heatmaps, boxplots, and advanced styling</p>
+        </div>
+        <div class="tech-card" id="tc-git">
+          <div class="tech-logo">🗂️</div>
+          <h3>Git & GitHub</h3>
+          <p>Version control and project hosting for the internship</p>
+        </div>
+      </div>
+
+      <div class="run-section">
+        <h3 class="sub-title">▶ How to Run</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span>Terminal / PowerShell</span>
+            <button class="copy-btn" id="copy-run-cmd" onclick="copyCode()">Copy</button>
+          </div>
+          <pre><span class="code-comment"># Install dependencies</span>
+pip install pandas numpy matplotlib seaborn
+
+<span class="code-comment"># Run the analysis</span>
+python unemployment_analysis.py
+
+<span class="code-comment"># Outputs: 7 .png plots + summary printed to console</span></pre>
+        </div>
+      </div>
+
+      <div class="github-section">
+        <h3 class="sub-title">📤 GitHub Upload</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span>Git Commands</span>
+            <button class="copy-btn" id="copy-git-cmd" onclick="copyGit()">Copy</button>
+          </div>
+          <pre><span class="code-comment"># Initialize and push to GitHub</span>
+git init
+git add .
+git commit -m "Task 2: Unemployment Analysis with Python — CodeAlpha Internship"
+git branch -M main
+git remote add origin https://github.com/YourUsername/CodeAlpha-Task2-Unemployment-Analysis.git
+git push -u origin main</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="logo-icon">📉</span>
+          <span class="logo-text">UnemploymentAI</span>
+          <p>India Unemployment Analysis · CodeAlpha Task 2 · May Batch 2026</p>
+        </div>
+        <div class="footer-links-grid">
+          <div class="fl-col">
+            <h4>Analysis</h4>
+            <a href="#overview">Dataset Overview</a>
+            <a href="#trends">Trends</a>
+            <a href="#covid">COVID Impact</a>
+            <a href="#states">State-wise</a>
+          </div>
+          <div class="fl-col">
+            <h4>Insights</h4>
+            <a href="#zones">Zone Analysis</a>
+            <a href="#gallery">Visualizations</a>
+            <a href="#insights">Key Findings</a>
+            <a href="#about">Tech Stack</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-author">
+          Made with ❤️ by <strong>Vilash Kumar Reddy</strong> · CodeAlpha Data Science Intern
+        </div>
+        <div class="footer-copy">© 2026 · All data sourced from CMIE / Kaggle</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
